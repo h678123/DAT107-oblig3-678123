@@ -12,5 +12,6 @@ public class Main
 
         Ansatt ansatt1 = ansattDAO.findAnsattById(2);
         System.out.println(ansatt1.getName());
+        // test
     }
 }
