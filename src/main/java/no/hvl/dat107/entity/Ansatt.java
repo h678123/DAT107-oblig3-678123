@@ -46,16 +46,26 @@ public class Ansatt {
         return fornavn;
     }
 
+    public void setManedsLonn(int manedsLonn) {
+        this.manedsLonn = manedsLonn;
+    }
+
     @Override
     public String toString() {
-        return "Ansatt{" +
-                "id = " + id + "\n" +
+        return "id = " + id + "\n" +
                 "brukernavn = " + brukernavn + "\n" +
                 "fornavn = " + fornavn + "\n" +
                 "etternavn = " + etternavn + "\n" +
                 "ansettelse_dato = " + ansettelse_dato + "\n" +
                 "stilling = " + stilling + "\n" +
-                "manedsLonn = " + manedsLonn + "\n" +
-                '}';
+                "manedsLonn = " + manedsLonn;
+    }
+
+    public String showFornavnEtternavn() {
+        return fornavn + " " + etternavn;
+    }
+
+    public String getBrukernavn() {
+        return brukernavn;
     }
 }

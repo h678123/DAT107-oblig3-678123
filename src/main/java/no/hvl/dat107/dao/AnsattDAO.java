@@ -6,11 +6,14 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import no.hvl.dat107.entity.Ansatt;
 
+import java.util.List;
+
 public class AnsattDAO {
 
     private EntityManagerFactory emf;
 
     private Ansatt ansatt;
+
 
     public AnsattDAO() {
         emf = Persistence.createEntityManagerFactory("oblig3");
@@ -23,10 +26,24 @@ public class AnsattDAO {
      * @return Ansatt class instance
      */
     public Ansatt findAnsattById(int id) {
-        ansatt = null;
         EntityManager em = emf.createEntityManager();
         try {
             ansatt = em.find(Ansatt.class, id);
+        } finally {
+            em.close();
+        }
+        return ansatt;
+    }
+
+    // TODO ------------------------------------------------------------------------------
+    // TODO ------------------------------------------------------------------------------
+
+    public Ansatt findAnsattByBrukernavn(String user) {
+        EntityManager em = emf.createEntityManager();
+        // TODO -- FINN ANSATT OG SKRIV HAN UT VIA BRUKERNAVN. IKKE TA ALLE I EN LIST Å FILTER, DET SKAL GJØRES I DATABASEN.
+        try {
+            ansatt = (Ansatt) em.createNativeQuery("SELECT a FROM Ansatt" +
+                    "WHERE a.brukernavn = :user");
         } finally {
             em.close();
         }
@@ -50,18 +67,17 @@ public class AnsattDAO {
             em.persist(ans);
 
             tx.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            //  throw new IllegalArgumentException("\n -------- Raden du prøver å legge til finnes allerede! ----------");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("\n -------- Raden du prøver å legge til finnes allerede! ----------");
         } finally {
             em.close();
         }
     }
 
     /**
-     * Remove
+     * Remove an ansatt from the DB.
      *
-     * @param ans
+     * @param id -- primary key for said ansatt
      */
     public void removeAnsattById(int id) {
         EntityManager em = emf.createEntityManager();
@@ -78,5 +94,49 @@ public class AnsattDAO {
         } finally {
             em.close();
         }
+    }
+
+    /**
+     * Set new manedslonn for single ansatt in DB
+     *
+     * @param id   -- primary key of ansatt
+     * @param lonn -- new value of lonn
+     */
+    public void setManedsLonn(int id, int lonn) {
+
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        Ansatt ans;
+        try {
+            tx.begin();
+
+            ans = findAnsattById(id);
+            ans.setManedsLonn(lonn);
+            em.merge(ans);
+
+            tx.commit();
+
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Searches the DB for all rows in 'Ansatt' and returns them as List.
+     *
+     * @return List<Ansatt> liste
+     */
+    public List<Ansatt> getAllAnsatte() {
+
+        EntityManager em = emf.createEntityManager();
+        List<Ansatt> list;
+        try {
+            list = em.createQuery("SELECT a FROM Ansatt a", Ansatt.class).getResultList();
+        } finally {
+            em.close();
+        }
+
+        return list;
+
     }
 }

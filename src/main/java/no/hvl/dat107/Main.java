@@ -6,6 +6,8 @@ import org.eclipse.persistence.jpa.jpql.parser.LocalDateTime;
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Scanner;
 
 
 public class Main {
@@ -14,22 +16,43 @@ public class Main {
 
         AnsattDAO ansattDAO = new AnsattDAO();
 
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Hallaien \n" +
+                "Hva vil du gjøre? \n" +
+                "1  -- Se alle ansatte \n" +
+                "2 -- Søk etter ansatt med brukernavn \n");
+        String in = sc.next();
 
-        // finn ansatt
+        switch (in) {
+            case "1":
+                System.out.println("Her er alle våre ansatte: ");
+                List<Ansatt> l = ansattDAO.getAllAnsatte();
+                System.out.println(l.size());
+                for (Ansatt a : l) {
+                    System.out.println(a.showFornavnEtternavn());
+                }
+                return;
+            case "2":
+                System.out.println("Hva er brukernavnet?");
+                String inBruker = sc.next();
+                System.out.println(ansattDAO.findAnsattByBrukernavn(inBruker).toString());
+
+        }
+/*
+        // finn ansatt -- read
         Ansatt ansatt1 = ansattDAO.findAnsattById(2);
         System.out.println(ansatt1.getName());
 
         System.out.println("---------------");
-        // legg til
+        // legg til -- Create
         Ansatt tmpAns = new Ansatt("breen", "ish", "ishern", ansDato, "Pengteller", 100000);
         ansattDAO.saveAnsatt(tmpAns);
-        System.out.println(ansattDAO.findAnsattById(5).toString());
 
-        // fjern -- later som jeg ikke har referanse oppe
-        //  ansattDAO.removeAnsattById(5);
+        // fjern -- remove
+        ansattDAO.removeAnsattById(5);
 
-        // duplikat
-        //    Ansatt ny = new Ansatt("enzenz", "Enzo", "Mendes", ansDato, "Utvikler", 60000);
-        //   ansattDAO.saveAnsatt(ny);
+        // endre -- update
+        ansattDAO.setManedsLonn(2, 59000);
+  */
     }
 }
