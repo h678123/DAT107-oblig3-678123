@@ -1,9 +1,6 @@
 package no.hvl.dat107.dao;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
 import no.hvl.dat107.entity.Ansatt;
 
 import java.util.List;
@@ -35,15 +32,19 @@ public class AnsattDAO {
         return ansatt;
     }
 
-    // TODO ------------------------------------------------------------------------------
-    // TODO ------------------------------------------------------------------------------
-
+    /**
+     * Searches the DB for an Ansatt with the given parameter and returns it.
+     *
+     * @param Ansatt.username
+     * @return Ansatt object
+     */
     public Ansatt findAnsattByBrukernavn(String user) {
         EntityManager em = emf.createEntityManager();
-        // TODO -- FINN ANSATT OG SKRIV HAN UT VIA BRUKERNAVN. IKKE TA ALLE I EN LIST Å FILTER, DET SKAL GJØRES I DATABASEN.
         try {
-            ansatt = (Ansatt) em.createNativeQuery("SELECT a FROM Ansatt" +
-                    "WHERE a.brukernavn = :user");
+            TypedQuery<Ansatt> query = em.createQuery("SELECT a FROM Ansatt a" +
+                    " WHERE a.brukernavn = :user", Ansatt.class);
+            query.setParameter("user", user);
+            ansatt = query.getSingleResult();
         } finally {
             em.close();
         }
@@ -119,6 +120,24 @@ public class AnsattDAO {
         } finally {
             em.close();
         }
+    }
+
+    public void setStilling(int id, String s) {
+
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+
+            ansatt = findAnsattById(id);
+            ansatt.setStilling(s);
+            em.merge(ansatt);
+
+            tx.commit();
+        } finally {
+            em.close();
+        }
+
     }
 
     /**

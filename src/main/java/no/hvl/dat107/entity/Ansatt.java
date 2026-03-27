@@ -13,7 +13,8 @@ public class Ansatt {
     private int id;
 
     // FK
-//    private int avdelingId;
+    @JoinColumn(name = "avdeling_id")
+    private int avdelingId;
     //   private int prosjektId;
 
     // attributter
@@ -50,6 +51,10 @@ public class Ansatt {
         this.manedsLonn = manedsLonn;
     }
 
+    public void setStilling(String stilling) {
+        this.stilling = stilling;
+    }
+
     @Override
     public String toString() {
         return "id = " + id + "\n" +
@@ -61,8 +66,8 @@ public class Ansatt {
                 "manedsLonn = " + manedsLonn;
     }
 
-    public String showFornavnEtternavn() {
-        return fornavn + " " + etternavn;
+    public String showAnsattInfo() {
+        return id + " " + fornavn + " " + etternavn + " " + stilling;
     }
 
     public String getBrukernavn() {
