@@ -39,13 +39,14 @@ public class Ansatt {
     }
 
 
-    public Ansatt(String brukernavn, String fornavn, String etternavn, LocalDate ansettelse_dato, String stilling, int manedsLonn) {
+    public Ansatt(String brukernavn, String fornavn, String etternavn, LocalDate ansettelse_dato, String stilling, int manedsLonn, Avdeling avdeling) {
         this.brukernavn = brukernavn;
         this.fornavn = fornavn;
         this.etternavn = etternavn;
         this.ansettelse_dato = ansettelse_dato;
         this.stilling = stilling;
         this.manedsLonn = manedsLonn;
+        this.avdeling = avdeling;
     }
 
     public Ansatt() {

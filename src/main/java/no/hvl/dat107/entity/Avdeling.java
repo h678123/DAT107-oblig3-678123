@@ -16,9 +16,27 @@ public class Avdeling {
     @OneToMany(mappedBy = "avdeling", fetch = FetchType.EAGER)
     private List<Ansatt> ansatte;
 
+    @OneToOne
+    @JoinColumn(name = "sjef_ansatt_id")
+    private Ansatt sjef;
+
     public List<Ansatt> getAnsatte() {
         return ansatte;
     }
 
+    public Ansatt getBoss() {
+        return sjef;
+    }
 
+    public String getNavn() {
+        return navn;
+    }
+
+    public void setSjef(Ansatt ans) {
+        this.sjef = ans;
+    }
+
+    public int getId() {
+        return avdelingId;
+    }
 }
