@@ -4,16 +4,21 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+@Entity
 public class Avdeling {
 
     @Id
+    @Column(name = "avdeling_id")
     private int avdelingId;
 
     private String navn;
 
     @OneToMany(mappedBy = "avdeling", fetch = FetchType.EAGER)
-    @JoinColumn(name = "sjef_ansatt_id")
-    private Ansatt sjef;
+    private List<Ansatt> ansatte;
+
+    public List<Ansatt> getAnsatte() {
+        return ansatte;
+    }
 
 
 }

@@ -12,10 +12,6 @@ public class AnsattDAO {
     private Ansatt ansatt;
 
 
-    public AnsattDAO() {
-        emf = Persistence.createEntityManagerFactory("oblig3");
-    }
-
     /**
      * Searches the database for an 'Ansatt' with the given id and return Ansatt object.
      *
@@ -30,6 +26,10 @@ public class AnsattDAO {
             em.close();
         }
         return ansatt;
+    }
+
+    public AnsattDAO() {
+        emf = Persistence.createEntityManagerFactory("oblig3");
     }
 
     /**

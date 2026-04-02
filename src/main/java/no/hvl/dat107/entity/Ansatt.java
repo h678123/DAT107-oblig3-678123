@@ -3,6 +3,7 @@ package no.hvl.dat107.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(schema = "oblig3")
@@ -13,8 +14,12 @@ public class Ansatt {
     private int id;
 
     // FK
+
+    // avdeling
+    @ManyToOne
     @JoinColumn(name = "avdeling_id")
-    private int avdelingId;
+    private Avdeling avdeling;
+
     //   private int prosjektId;
 
     // attributter
@@ -24,6 +29,14 @@ public class Ansatt {
     private LocalDate ansettelse_dato;
     private String stilling;
     private int manedsLonn;
+
+    public Avdeling getAvdeling() {
+        return avdeling;
+    }
+
+    public void setAvdeling(Avdeling avdeling) {
+        this.avdeling = avdeling;
+    }
 
 
     public Ansatt(String brukernavn, String fornavn, String etternavn, LocalDate ansettelse_dato, String stilling, int manedsLonn) {

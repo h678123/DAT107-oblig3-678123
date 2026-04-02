@@ -1,7 +1,9 @@
 package no.hvl.dat107;
 
 import no.hvl.dat107.dao.AnsattDAO;
+import no.hvl.dat107.dao.AvdelingDAO;
 import no.hvl.dat107.entity.Ansatt;
+import no.hvl.dat107.entity.Avdeling;
 import org.eclipse.persistence.jpa.jpql.parser.LocalDateTime;
 
 import java.sql.Time;
@@ -14,14 +16,18 @@ public class Main {
     public static void main(String[] args) {
         LocalDate ansDato = LocalDate.now();
 
+        // DAO
         AnsattDAO ansattDAO = new AnsattDAO();
+        AvdelingDAO avdDAO = new AvdelingDAO();
 
         Scanner sc = new Scanner(System.in);
 
-        String cmds = "1  -- Se alle ansatte \n" +
+        String cmds = "\n" +
+                "1  -- Se alle ansatte \n" +
                 "2 -- Søk etter ansatt med brukernavn \n" +
                 "3 -- Endre stilling\n" +
-                "4 -- Legg til ny ansatt";
+                "4 -- Legg til ny ansatt\n" +
+                "5 -- Finn ansatte med avdeling";
 
         System.out.print("Hallaien \n" +
                 "Hva vil du gjøre? \n" + cmds);
@@ -79,6 +85,21 @@ public class Main {
                     ansattDAO.saveAnsatt(new Ansatt(fNavn + eNavn, fornavn,
                             etternavn, ansDato, stilling, Integer.parseInt(manedslonn)));
                     break;
+
+                case "5": // finn ansatte by avdeling id
+                    System.out.println("Hva er id til avdelingen? \n" +
+                            "Utvikling == 1 \n" +
+                            "Salg == 2\n" +
+                            "Testing == 3\n" +
+                            "Diverse == 4"
+                    );
+                    int avdId = Integer.parseInt(sc.next());
+                    Avdeling avd = avdDAO.getAvdelingById(avdId);
+                    for (Ansatt a : avd.getAnsatte()) {
+                        System.out.println(a.showAnsattInfo());
+                    }
+                    break;
+
                 case "h": // HELP COMMAND
                     System.out.println(cmds);
                     break;
