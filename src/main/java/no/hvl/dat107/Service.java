@@ -22,7 +22,6 @@ public class Service {
 
         // sjekk om ansatt er allerede en sjef
         for (Avdeling a : alleAvdelinger) {
-            System.out.println(a.getBoss().getName());
             if (a.getBoss() != null && a.getBoss().getId() == valgtAnsatt.getId()) {
                 System.out.println("Denne ansatten er allerede en sjef!\n" +
                         "Endre sjefen til " + a.getNavn() + " før du kan endre avdeling til " + valgtAnsatt.getName());

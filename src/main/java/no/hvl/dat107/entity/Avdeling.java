@@ -20,6 +20,15 @@ public class Avdeling {
     @JoinColumn(name = "sjef_ansatt_id")
     private Ansatt sjef;
 
+
+    public Avdeling() {
+    }
+
+    public Avdeling(String navn, Ansatt sjef) {
+        this.navn = navn;
+        this.sjef = sjef;
+    }
+
     public List<Ansatt> getAnsatte() {
         return ansatte;
     }

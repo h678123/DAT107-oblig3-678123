@@ -55,4 +55,22 @@ public class AvdelingDAO {
         }
     }
 
+    public void nyAvdeling(Avdeling avd) {
+        EntityManager em = emf.createEntityManager();
+        
+        EntityTransaction tx = em.getTransaction();
+        try {
+
+            tx.begin();
+
+            em.persist(avd);
+
+            tx.commit();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("\n -------- Raden du prøver å legge til finnes allerede! ----------");
+        } finally {
+            em.close();
+        }
+    }
+
 }

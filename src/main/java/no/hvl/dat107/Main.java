@@ -20,6 +20,8 @@ public class Main {
         AnsattDAO ansattDAO = new AnsattDAO();
         AvdelingDAO avdDAO = new AvdelingDAO();
 
+        Service svc = new Service();
+
         Scanner sc = new Scanner(System.in);
 
         String cmds = "\n" +
@@ -99,38 +101,28 @@ public class Main {
                             break;
                         // ------------------- ENDRE AVDELING
                         case 3:
+                            if (!svc.sjekkOmAnsattErSjef(ansId)) {
 
-                            boolean funnet = false;
-                            Ansatt valgtAnsatt = ansattDAO.findAnsattById(ansId);
-                            List<Avdeling> alleAvdelinger = avdDAO.getAllAvdelinger();
+                                Ansatt valgtAnsatt = ansattDAO.findAnsattById(ansId);
 
-                            // sjekk om ansatt er allerede en sjef
-                            for (Avdeling a : alleAvdelinger) {
-                                System.out.println(a.getBoss().getName());
-                                if (a.getBoss() != null && a.getBoss().getId() == valgtAnsatt.getId()) {
-                                    System.out.println("Denne ansatten er allerede en sjef!\n" +
-                                            "Endre sjefen til " + a.getNavn() + " før du kan endre avdeling til " + valgtAnsatt.getName());
-                                    funnet = true;
-                                    break;
-                                }
+                                System.out.println("Hvilken avdeling vil du endre til?" + avdelinger);
+                                Avdeling nyAvd = avdDAO.getAvdelingById(Integer.parseInt(sc.next()));
+
+                                valgtAnsatt.setAvdeling(nyAvd);
+                                System.out.println(valgtAnsatt.getName() + "sin nye avdeling ble " + valgtAnsatt.getAvdeling());
                             }
-                            if (funnet) {
-                                break;
-                            }
-
-                            System.out.println("Hvilken avdeling vil du endre til?" + avdelinger);
-                            Avdeling nyAvd = avdDAO.getAvdelingById(Integer.parseInt(sc.next()));
-
-                            valgtAnsatt.setAvdeling(nyAvd);
-                            System.out.println(valgtAnsatt.getName() + "sin nye avdeling ble " + valgtAnsatt.getAvdeling());
-
                             break;
 
                         case 4:
-                            System.out.println("Hvilken avdeling skal vedkommende være sjef over?\n" + avdelinger);
-                            Avdeling nyeAvd = avdDAO.getAvdelingById(Integer.parseInt(sc.next()));
-                            avdDAO.oppdaterSjef(nyeAvd.getId(), ansattDAO.findAnsattById(ansId));
-                            System.out.println("Da er det gjort!");
+                            if (svc.sjekkOmAnsattErSjef(ansId)) {
+                                System.out.println("Ansatt er allerede sjef!\n" +
+                                        "Endre sjefen til avdelingen før du kan endre han til en annen!");
+                            } else {
+                                System.out.println("Hvilken avdeling skal vedkommende være sjef over?\n" + avdelinger);
+                                Avdeling nyeAvd = avdDAO.getAvdelingById(Integer.parseInt(sc.next()));
+                                avdDAO.oppdaterSjef(nyeAvd.getId(), ansattDAO.findAnsattById(ansId));
+                                System.out.println("Da er det gjort!");
+                            }
                             break;
 
 
@@ -197,8 +189,20 @@ public class Main {
                     sc.nextLine();
                     String nyeNavnAvd = sc.nextLine();
 
-                    System.out.println("Hvem skal være sjef på den nye avdelingen?\n" +
-                            "Her er liste over våre ansatte: ");
+                    System.out.println("Hvem skal være sjef på den nye avdelingen?\n\n");
+                    int nyeSjefId = Integer.parseInt(sc.next());
+
+                    if (svc.sjekkOmAnsattErSjef(nyeSjefId)) {
+                        break;
+                    }
+                    Ansatt endreAnsatt = ansattDAO.findAnsattById(nyeSjefId);
+                    Avdeling nyeAvd = new Avdeling(nyeNavnAvd, endreAnsatt);
+                    endreAnsatt.setAvdeling(nyeAvd);
+
+                    avdDAO.nyAvdeling(nyeAvd);
+
+
+                    System.out.println("Da er det gjort!");
                     break;
 
                 case "h": // HELP COMMAND
