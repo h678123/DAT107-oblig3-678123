@@ -15,6 +15,12 @@ public class Service {
     public Service() {
     }
 
+    /**
+     * Sjekker om en ansatt er sjef i en hvilken som helst avdeling
+     *
+     * @param ansId -- id til ansatt
+     * @return bolean om ansatt er sjef eller ikke
+     */
     public boolean sjekkOmAnsattErSjef(int ansId) {
         boolean funnet = false;
         Ansatt valgtAnsatt = ansattDAO.findAnsattById(ansId);

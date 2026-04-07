@@ -122,6 +122,12 @@ public class AnsattDAO {
         }
     }
 
+    /**
+     * setter ny stilling til en ansatt
+     *
+     * @param id til ansatt
+     * @param s  -- nye stillingsnavn
+     */
     public void setStilling(int id, String s) {
 
         EntityManager em = emf.createEntityManager();
@@ -141,7 +147,7 @@ public class AnsattDAO {
     }
 
     /**
-     * Searches the DB for all rows in 'Ansatt' and returns them as List.
+     * søker dabasen for alle rader 'Ansatt' og returnerer de som en List.
      *
      * @return List<Ansatt> liste
      */

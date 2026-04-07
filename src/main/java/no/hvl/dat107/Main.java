@@ -24,6 +24,7 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
 
+        // enkel print av alle commandoer i appen
         String cmds = "\n" +
                 "1 -- Se alle ansatte \n" +
                 "2 -- Søk etter ansatt med brukernavn \n" +
@@ -35,6 +36,8 @@ public class Main {
                 "h -- Hjelp\n" +
                 "q -- Avslutt";
 
+        // en hardcode av alle avdelinger, fikk ikke til stream
+        // om du har en ide for meg der jeg printer alle en og en vil jeg gjerne vite det.
         String avdelinger =
                 "Utvikling == 1 \n" +
                         "Salg == 2\n" +
@@ -44,7 +47,7 @@ public class Main {
         System.out.print("Hallaien \n" +
                 "Hva vil du gjøre? \n");
 
-        boolean stop = false;
+        boolean stop = false; // brukes for å avslutte program
         while (!stop) {
             System.out.println(cmds + "\n");
             String in = sc.next();
@@ -62,7 +65,7 @@ public class Main {
                 // -------------------------- SØK ETTER ANSATT MED BRUKERNAVN ------------------
                 case "2":
                     System.out.println("Hva er brukernavnet?");
-                    String inBruker = sc.next();
+                    String inBruker = sc.next().toLowerCase();
                     System.out.println(ansattDAO.findAnsattByBrukernavn(inBruker).toString());
                     break;
 
@@ -83,24 +86,24 @@ public class Main {
                     System.out.println("Tast valg for hva du vil endre.\n" +
                             "1 = Stilling\n" +
                             "2 = Månedslønn\n" +
-                            "3 = Avdeling" +
+                            "3 = Avdeling\n" +
                             "4 = Gjør om til sjef");
-                    int valg2 = Integer.parseInt(sc.next());
+                    String valg2 = sc.next();
                     switch (valg2) {
                         // --------------- ENDRE STILLING
-                        case 1:
+                        case "1":
                             System.out.println("Hva heter den nye stillingen?");
                             String stIn = sc.next();
                             ansattDAO.setStilling(ansId, stIn);
                             break;
                         // ----------------- ENDRE MÅNDESLØNN
-                        case 2:
+                        case "2":
                             System.out.println("Hva skal den nye månedslønnen være? (ikke skriv med mellomrom)");
                             int nyMndLonn = Integer.parseInt(sc.next());
                             ansattDAO.setManedsLonn(ansId, nyMndLonn);
                             break;
                         // ------------------- ENDRE AVDELING
-                        case 3:
+                        case "3":
                             if (!svc.sjekkOmAnsattErSjef(ansId)) {
 
                                 Ansatt valgtAnsatt = ansattDAO.findAnsattById(ansId);
@@ -112,8 +115,8 @@ public class Main {
                                 System.out.println(valgtAnsatt.getName() + "sin nye avdeling ble " + valgtAnsatt.getAvdeling());
                             }
                             break;
-
-                        case 4:
+                        // ------------------ SETT ANSATT SOM SJEF
+                        case "4":
                             if (svc.sjekkOmAnsattErSjef(ansId)) {
                                 System.out.println("Ansatt er allerede sjef!\n" +
                                         "Endre sjefen til avdelingen før du kan endre han til en annen!");
@@ -183,6 +186,7 @@ public class Main {
                             "\n Sjef for avdelingen: \n" + valgtAvdeling.getBoss()
                     );
                     break;
+                // -------------------------- OPPRETT AVDELING ----------------
                 case "7":
                     System.out.println("Du er i ferd med å opprette en ny avdeling.\n" +
                             "Hva er navnet på den nye avdelingen?");
